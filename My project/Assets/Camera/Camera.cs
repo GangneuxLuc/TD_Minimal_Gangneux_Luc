@@ -18,7 +18,9 @@ public class Camera : MonoBehaviour
         transform.position = player.position + rotation * offset;
 
 
-        // regarde le joueur (on peut ajuster la hauteur du point visé si nécessaire)
+         //regarde le joueur (on peut ajuster la hauteur du point visé si nécessaire)
         transform.LookAt(player.position + Vector3.up * 1.5f);
+       
     }
+
 }

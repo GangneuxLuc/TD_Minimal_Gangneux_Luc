@@ -1,71 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
-public class Spawner : MonoBehaviour //La classe Spawner permet de créer des ennemis et de les stocker dans une liste
+public class Spawner : MonoBehaviour
 {
     [Header("Prefabs des ennemis")]
-    public GameObject beePrefab; //Je crée une variable pour stocker le prefab de l'ennemi
-    public GameObject carrotPrefab; //Je crée une variable pour stocker le prefab de l'ennemi
+    [SerializeField] GameObject beePrefab;
+    [SerializeField] GameObject carrotPrefab;
 
     [Header("Liste des ennemis")]
-    List<GameObject> ennemi = new List<GameObject>(); //Je crée une liste pour stocker les ennemis
+    List<GameObject> ennemi = new List<GameObject>();
+
+    // Référence à l'instance du joueur en scène (recherchée au démarrage)
+    GameObject playerInstance;
+
+    void Start()
+    {
+        playerInstance = GameObject.FindGameObjectWithTag("Player");
+        if (playerInstance == null) Debug.LogWarning("Spawner: aucun GameObject avec le tag 'Player' trouvé.");
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) //Si j'appuie sur la touche L, j'appelle la méthode ListerEnnemis
-        {
-            ListerEnnemis();
-        }
-       
-        if (Input.GetKeyDown(KeyCode.V)) //Si j'appuie sur la touche V, je lance la coroutine Vagues
-        {
-            StartCoroutine(Vagues());
-        }
+        if (Input.GetKeyDown(KeyCode.L)) ListerEnnemis();
+        if (Input.GetKeyDown(KeyCode.V)) StartCoroutine(Vagues());
+    }
 
-        void ListerEnnemis() //Je crée une méthode pour lister les types d'ennemis dans la liste
+    void ListerEnnemis()
+    {
+        foreach (GameObject Ennemi in ennemi)
         {
-            foreach (GameObject Ennemi in ennemi)
-            {
-                Debug.Log("Type d'ennemi dans la liste : " + Ennemi.name);
-            }
-            
+            Debug.Log("Type d'ennemi dans la liste : " + Ennemi.GetType());
         }
     }
 
-    IEnumerator Vagues() //Je crée une coroutine pour gérer les vagues d'ennemis
+    IEnumerator Vagues()
     {
-        Debug.Log("Attention la première vague commence dans 2.5s");
-        yield return new WaitForSeconds(2.5f); //J'attends 2.5 secondes avant de commencer la première vague
-       for (int vague = 1; vague <= 3; vague++) //Je crée une boucle pour gérer les vagues
+        Debug.Log("Attention la première vague commence dans 5s");
+        yield return new WaitForSeconds(5f);
+        for (int vague = 1; vague <= 3; vague++)
         {
             Debug.Log("Vague " + vague + " commencée !");
-            for (int i = 0; i < 3; i++) //Je crée une boucle pour gérer le nombre d'ennemis par vague
+            for (int i = 0; i < 3; i++)
             {
-                GameObject newEnnemy;
-                if (Random.value > 0.5f) //Je choisis aléatoirement le type d'ennemi à créer
-                {
-                    newEnnemy = carrotPrefab;
-                }
-                else
-                {
-                    newEnnemy = beePrefab;
+                GameObject prefab = (Random.value > 0.5f) ? carrotPrefab : beePrefab;
+                GameObject instance = Instantiate(prefab, transform.position, Quaternion.identity);
 
-                }
-
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(newEnnemy);
-                instance.transform.position = transform.position;
-                instance.transform.rotation = Quaternion.identity;
+                // Ajouter l'instance à la liste
                 ennemi.Add(instance);
-                Debug.Log("Un nouvel ennemi " + instance.name + " a été créé !");
-                yield return new WaitForSeconds(3f); //J'attends 1 seconde avant de créer le prochain ennemi
+
+                // IMPORTANT : assigner l'instance du player (pas le prefab)
+                var ec = instance.GetComponent<EnnemyClass>();
+                if (ec != null && playerInstance != null)
+                {
+                    ec.player = playerInstance;
+                }
+
+                Debug.Log("Un nouvel ennemi de type " + instance.name + " a été créé !");
+                yield return new WaitForSeconds(3f);
             }
             Debug.Log("Vague " + vague + " déployée");
-            yield return new WaitForSeconds(10f); //J'attends 10 secondes avant de commencer la prochaine vague 
-       
+            yield return new WaitForSeconds(10f);
         }
     }
 }
-
-

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6176571793168456928}
   - component: {fileID: -8449879608074638494}
   - component: {fileID: 1299379518971249660}
+  - component: {fileID: -3053086836424342060}
   m_Layer: 0
   m_Name: Bee
   m_TagString: Ennemy
@@ -130,6 +131,26 @@ MonoBehaviour:
   damage: 0
   speed: 1
   player: {fileID: 1156284652567387631, guid: db37d45c5a2865c4fb720f74b1dbcbec, type: 3}
-  ennemy: {fileID: 5283675560076074506}
   range: 5
   bDebugCanMove: 1
+  playerTag: Player
+--- !u!114 &-3053086836424342060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5283675560076074506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2800cbfc3800c36478de5d2b5e87b754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnnemyClass
+  HP: 0
+  Name: 
+  damage: 0
+  speed: 1
+  player: {fileID: 0}
+  range: 2
+  bDebugCanMove: 1
+  playerTag: Player

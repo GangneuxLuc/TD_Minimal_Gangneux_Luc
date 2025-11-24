@@ -1,9 +1,21 @@
+using UnityEditor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] bool isPaused;
+    public GameObject player;
+   
+    void Start()
+    {
+
+        GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(player);
+        instance.transform.position = transform.position;
+        instance.transform.rotation = Quaternion.identity;
+    }
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

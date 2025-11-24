@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4699568572564564352}
   - component: {fileID: 8208709467596354485}
   m_Layer: 0
-  m_Name: Character
+  m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,10 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Joueur
   speed: 5
-  joueur: {fileID: 1156284652567387631}
-  ennemy: {fileID: -7075495844952344905, guid: edc4ef881e82b5b4b810acdb0ec9a9f4, type: 3}
   CanMove: 1
-  range: 2
 --- !u!50 &4699568572564564352
 Rigidbody2D:
   serializedVersion: 5
