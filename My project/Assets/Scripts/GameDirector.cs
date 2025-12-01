@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameDirector : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] bool isPaused;
@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
-        GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(player);
+        /*GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(player);
         instance.transform.position = transform.position;
-        instance.transform.rotation = Quaternion.identity;
+        instance.transform.rotation = Quaternion.identity; */
     }
 
 

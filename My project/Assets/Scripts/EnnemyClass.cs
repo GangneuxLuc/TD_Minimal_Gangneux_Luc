@@ -1,15 +1,17 @@
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 {
     [Header("Statistiques de l'ennemi")]
-    [SerializeField] protected int HP;
+    [SerializeField] protected int HP = 3;
     [SerializeField] protected string Name;
     [SerializeField] protected int damage;
     [SerializeField] protected float speed = 1f;
+    [SerializeField] protected int AttackDmg;
+    [SerializeField] protected float AttackSpeed;
 
     [Header("Références")]
     [Tooltip("Assignez l'instance du joueur dans l'inspecteur, ou laissez vide pour recherche par tag")]
@@ -18,17 +20,21 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
     [SerializeField] protected float range = 2f;
     float dst;
     public bool bDebugCanMove = true;
-    [SerializeField] string playerTag = "Player";
+
+   
 
     void Start()
     {
-        // Ne pas écraser si assigné dans l'inspecteur — seulement fallback
-        if (player == null)
-        {
-            GameObject p = GameObject.FindGameObjectWithTag(playerTag);
-            if (p != null) player = p;
-            else Debug.LogWarning($"EnnemyClass: aucun GameObject avec le tag '{playerTag}' trouvé. Assignez 'player' depuis le Spawner ou l'inspecteur.");
-        }
+       GetComponent<PlayerProp>();
+        
+
+    }
+
+    private void Update()
+    {
+        Movement();
+        Debug.Log("on rentre ici");
+       
     }
 
     public virtual void Attack()
@@ -38,12 +44,6 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 
     public virtual void Movement()
     {
-        if (player == null)
-        {
-            // On ne peut pas calculer la distance sans référence au player
-            return;
-        }
-
         dst = CalculateDistanceXYPlane();
         if (dst < range)
         {
@@ -61,16 +61,22 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         }
     }
 
-    private void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (player != null)
-            Debug.Log("Distance au joueur : " + CalculateDistanceXYPlane());
-        Movement();
+       
+        PlayerProp playerProp = collision.gameObject.GetComponent<PlayerProp>();
+        if (playerProp != null)
+        {
+            HP -= playerProp.AttackDmg;
+        }
+        if (HP < 1)
+        {
+            Destroy(gameObject);
+        }
     }
 
     protected float CalculateDistanceXYPlane()
     {
-        if (player == null) return float.PositiveInfinity;
         Vector2 V1 = new Vector2(player.transform.position.x, player.transform.position.y);
         Vector2 V2 = new Vector2(transform.position.x, transform.position.y);
         return Vector2.Distance(V1, V2);

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1727605215161805088}
   - component: {fileID: 4883408992257571407}
   - component: {fileID: -505207839136966983}
-  - component: {fileID: -4349466047520333325}
+  - component: {fileID: -3360055478471918952}
   m_Layer: 0
   m_Name: Carrots
   m_TagString: Ennemy
@@ -129,7 +129,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &-4349466047520333325
+--- !u!114 &-3360055478471918952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,14 +138,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8309466080182480658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2800cbfc3800c36478de5d2b5e87b754, type: 3}
+  m_Script: {fileID: 11500000, guid: f242751a37fdb4b4e93da37c09aed1b1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnnemyClass
-  HP: 0
-  Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Carrots
+  HP: 1
+  Name: Carrots
   damage: 0
   speed: 1
+  AttackDmg: 0
+  AttackSpeed: 0
   player: {fileID: 0}
   range: 2
   bDebugCanMove: 1
-  playerTag: Player
