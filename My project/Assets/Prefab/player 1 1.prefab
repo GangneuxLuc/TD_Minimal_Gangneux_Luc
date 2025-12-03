@@ -246,7 +246,7 @@ MonoBehaviour:
   speed: 5
   CanMove: 1
   range: 1
-  AttackSpeed: 0.5
+  AttackSpeed: 0.075
   HP: 10
   AttackDmg: 1
   isAttacking: 0

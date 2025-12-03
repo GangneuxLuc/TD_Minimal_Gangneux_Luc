@@ -9,7 +9,7 @@ public class Carrots : EnnemyClass //Je crée une classe Bee qui hérite de la cla
     }
     private void Start()
     {
-        HP = 1;
+        HP = 7;
 
 
     }

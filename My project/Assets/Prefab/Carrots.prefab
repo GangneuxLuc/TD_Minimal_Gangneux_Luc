@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f242751a37fdb4b4e93da37c09aed1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Carrots
-  HP: 1
+  HP: 10
   Name: Carrots
   damage: 0
   speed: 1

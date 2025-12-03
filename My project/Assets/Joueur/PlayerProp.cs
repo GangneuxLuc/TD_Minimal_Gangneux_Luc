@@ -9,9 +9,9 @@ public class PlayerProp : MonoBehaviour
     [SerializeField] private float speed = 1.0f;
    // [SerializeField] private GameObject joueur;
     [SerializeField] private bool CanMove = true;
-    [SerializeField] private float range = 1f;
-    [SerializeField] public float AttackSpeed = 1f;
-    [SerializeField] private int HP = 10;
+   // [SerializeField] private float range = 1f;
+    [SerializeField] public float attackSpeed = 1f;
+    //[SerializeField] private int HP = 10;
     [SerializeField] public int AttackDmg = 1;
     [SerializeField] public bool isAttacking = false;
 
@@ -38,9 +38,9 @@ public class PlayerProp : MonoBehaviour
     IEnumerator AttackCoroutine()
     {
         isAttacking = true;
-        yield return new WaitForSeconds(AttackSpeed);
+        yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
-        yield return new WaitForSeconds(AttackSpeed * 1.5f);
+        yield return new WaitForSeconds(attackSpeed * 1.5f);
     }
     public virtual void Movement()
     {

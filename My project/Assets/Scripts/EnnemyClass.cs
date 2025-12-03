@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 {
     [Header("Statistiques de l'ennemi")]
-    [SerializeField] public int HP = 3;
+    [SerializeField] public int HP;
     [SerializeField] protected string Name;
     [SerializeField] protected int damage;
     [SerializeField] protected float speed = 1f;
@@ -75,7 +75,7 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
             Debug.Log("L'ennemi a été touché par une spatule !");
             HP -= player.GetComponent<PlayerProp>().AttackDmg;
             Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
-            if (HP < 1)
+            if (HP <= 0)
             {
                 Destroy(gameObject);
                 Debug.Log("L'ennemi est mort !");
