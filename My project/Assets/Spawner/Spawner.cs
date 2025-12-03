@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour
                         ec.player = playerInstance;
                     }
 
-                    Debug.Log("Un nouvel ennemi de type " + instance.name + " a été créé !");
+                   // Debug.Log("Un nouvel ennemi de type " + instance.name + " a été créé !");
                     yield return new WaitForSeconds(3f);
                 }
                 Debug.Log("Vague " + vague + " déployée");

@@ -29,7 +29,7 @@ public class PlayerProp : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && isAttacking == false)
         {
-            Debug.Log("Le joueur attaque !");
+         
             StartCoroutine(AttackCoroutine());
         }
       

@@ -2,11 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using Unity.VisualScripting;
 
 public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 {
     [Header("Statistiques de l'ennemi")]
-    [SerializeField] protected int HP = 3;
+    [SerializeField] public int HP = 3;
     [SerializeField] protected string Name;
     [SerializeField] protected int damage;
     [SerializeField] protected float speed = 1f;
@@ -25,9 +26,7 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 
     void Start()
     {
-       GetComponent<PlayerProp>();
-        
-
+  
     }
 
     private void Update()
@@ -63,17 +62,29 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       
-        PlayerProp playerProp = collision.gameObject.GetComponent<PlayerProp>();
-        if (playerProp != null)
+
+        Debug.Log("Collision détectée avec : " + collision.gameObject.name);
+        /* if (collision.gameObject.CompareTag("Player"))
+         {
+             Attack();
+         }
+         */
+
+        if (collision.gameObject.CompareTag("Player"))
         {
-            HP -= playerProp.AttackDmg;
-        }
-        if (HP < 1)
-        {
-            Destroy(gameObject);
+            Debug.Log("L'ennemi a été touché par une spatule !");
+            HP -= player.GetComponent<PlayerProp>().AttackDmg;
+            Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
+            if (HP < 1)
+            {
+                Destroy(gameObject);
+                Debug.Log("L'ennemi est mort !");
+            }
         }
     }
+
+
+
 
     protected float CalculateDistanceXYPlane()
     {
