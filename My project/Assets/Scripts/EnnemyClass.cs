@@ -70,7 +70,7 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
          }
          */
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && player.GetComponent<PlayerProp>().isAttacking)
         {
             Debug.Log("L'ennemi a été touché par une spatule !");
             HP -= player.GetComponent<PlayerProp>().AttackDmg;
