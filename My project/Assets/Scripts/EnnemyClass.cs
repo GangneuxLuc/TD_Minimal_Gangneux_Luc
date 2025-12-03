@@ -9,36 +9,46 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
     [Header("Statistiques de l'ennemi")]
     [SerializeField] public int HP;
     [SerializeField] protected string Name;
-    [SerializeField] protected int damage;
-    [SerializeField] protected float speed = 1f;
+    [SerializeField] protected float speed;
     [SerializeField] protected int AttackDmg;
-    [SerializeField] protected float AttackSpeed;
+    [SerializeField] protected float AttackSpeed = 2f;
+    [SerializeField] protected bool isAttacking = false;
 
     [Header("Références")]
-    [Tooltip("Assignez l'instance du joueur dans l'inspecteur, ou laissez vide pour recherche par tag")]
     public GameObject player;
 
-    [SerializeField] protected float range = 2f;
-    float dst;
+    [SerializeField] protected float range = 0f;
+    protected float dst;
     public bool bDebugCanMove = true;
 
    
-
-    void Start()
-    {
-  
-    }
-
+       
     private void Update()
     {
         Movement();
-        Debug.Log("on rentre ici");
-       
+        Attack();
+
     }
 
     public virtual void Attack()
     {
-        Debug.Log("L'ennemi attaque !");
+        if (dst < range && isAttacking == false)
+        {
+            Debug.Log("L'ennemi attaque !");
+            StartCoroutine(AttackCoroutine());
+        }
+        
+    }
+   
+    protected IEnumerator AttackCoroutine()
+    {
+        
+       if (isAttacking) yield break; // Empêche d'attaquer si déjà en train d'attaquer
+        player.GetComponent<PlayerProp>().HP -= AttackDmg;
+        isAttacking = true;
+        yield return new WaitForSeconds(AttackSpeed);
+        isAttacking = false;
+
     }
 
     public virtual void Movement()
@@ -62,17 +72,8 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        Debug.Log("Collision détectée avec : " + collision.gameObject.name);
-        /* if (collision.gameObject.CompareTag("Player"))
-         {
-             Attack();
-         }
-         */
-
         if (collision.gameObject.CompareTag("Player") && player.GetComponent<PlayerProp>().isAttacking)
         {
-            Debug.Log("L'ennemi a été touché par une spatule !");
             HP -= player.GetComponent<PlayerProp>().AttackDmg;
             Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
             if (HP <= 0)

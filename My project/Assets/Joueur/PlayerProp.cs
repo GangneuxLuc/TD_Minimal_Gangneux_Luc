@@ -11,7 +11,7 @@ public class PlayerProp : MonoBehaviour
     [SerializeField] private bool CanMove = true;
    // [SerializeField] private float range = 1f;
     [SerializeField] public float attackSpeed = 1f;
-    //[SerializeField] private int HP = 10;
+    [SerializeField] public int HP = 10;
     [SerializeField] public int AttackDmg = 1;
     [SerializeField] public bool isAttacking = false;
 
@@ -22,6 +22,11 @@ public class PlayerProp : MonoBehaviour
     {
         Movement();
         Attack();
+        if (HP <= 0)
+        {
+            Debug.Log("Le joueur est mort !");
+            Destroy(gameObject);
+        }
 
     }
 

@@ -5,6 +5,7 @@ public class PivotRotation : MonoBehaviour
 {
     GameObject player;
     PlayerProp playerProp;
+    Quaternion InitialRotation;
 
 
 
@@ -12,6 +13,7 @@ public class PivotRotation : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player");
         playerProp = player.GetComponent<PlayerProp>();
+        InitialRotation = gameObject.transform.rotation;
 
     }
 
@@ -23,16 +25,11 @@ public class PivotRotation : MonoBehaviour
     }
     public IEnumerator Rotation()
     {
-
-       
-        
         if (playerProp.isAttacking)
         {
-            transform.Rotate(0f, 0f, -10f);
-            yield return new WaitForSeconds(player.GetComponent<PlayerProp>().attackSpeed /2);
-            transform.Rotate(0f, 0f, 10f);
-
-
+            transform.Rotate(0f, 0f, -1500 * Time.deltaTime);
+            yield return new WaitForSeconds(player.GetComponent<PlayerProp>().attackSpeed );
+            gameObject.transform.rotation = InitialRotation;
         }
     }
 }

@@ -11,6 +11,10 @@ public class Camera : MonoBehaviour
    
     float RotationX;
     float RotationY;
+    private void Start()
+    {
+        player = GameObject.FindWithTag("Player").transform;
+    }
     void LateUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, player.position + offset,smoothLerp);

@@ -5,16 +5,7 @@ public class GameDirector : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] bool isPaused;
-    public GameObject player;
-   
-    void Start()
-    {
-
-        /*GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(player);
-        instance.transform.position = transform.position;
-        instance.transform.rotation = Quaternion.identity; */
-    }
-
+  
 
     void Update()
     {
@@ -29,10 +20,14 @@ public class GameDirector : MonoBehaviour
 
     void PauseGame()
     {
+
         Time.timeScale = 0f;
         isPaused = true;
         Debug.Log("Game Paused");
         Instantiate(pauseMenu);
+      
+      
+
 
     }
 
@@ -42,6 +37,7 @@ public class GameDirector : MonoBehaviour
         isPaused = false;
         Debug.Log("Game Resumed");
         Destroy(GameObject.Find(pauseMenu.name + "(Clone)"));
+     
     }
 
     void StartGame()
