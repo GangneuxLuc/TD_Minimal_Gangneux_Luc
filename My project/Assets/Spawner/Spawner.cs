@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         playerInstance = GameObject.FindGameObjectWithTag("Player");
-        if (playerInstance == null) Debug.LogWarning("Spawner: aucun GameObject avec le tag 'Player' trouvé.");
+       
     }
 
     void Update()
@@ -57,10 +57,10 @@ public class Spawner : MonoBehaviour
                     }
 
                    // Debug.Log("Un nouvel ennemi de type " + instance.name + " a été créé !");
-                    yield return new WaitForSeconds(3f);
+                    yield return new WaitForSeconds(2f);
                 }
                 Debug.Log("Vague " + vague + " déployée");
-                yield return new WaitForSeconds(20f);
-           }
+                yield return new WaitForSeconds(5f);   
+        }
     }
 }

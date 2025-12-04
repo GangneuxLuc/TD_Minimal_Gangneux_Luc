@@ -17,12 +17,17 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
     [Header("Références")]
     public GameObject player;
 
+    SpriteRenderer spriteRenderer;
     [SerializeField] protected float range = 0f;
     protected float dst;
     public bool bDebugCanMove = true;
 
-   
-       
+   void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
+    }
+
     private void Update()
     {
         Movement();
@@ -75,6 +80,8 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         if (collision.gameObject.CompareTag("Player") && player.GetComponent<PlayerProp>().isAttacking)
         {
             HP -= player.GetComponent<PlayerProp>().AttackDmg;
+            ResetColor();
+
             Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
             if (HP <= 0)
             {
@@ -84,7 +91,12 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         }
     }
 
-
+    IEnumerator ResetColor()
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = Color.white;
+    }
 
 
     protected float CalculateDistanceXYPlane()
