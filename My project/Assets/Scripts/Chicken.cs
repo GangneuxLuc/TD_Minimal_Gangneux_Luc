@@ -1,24 +1,27 @@
 using System.Collections;
+using System.Net.NetworkInformation;
 using UnityEditor;
 using UnityEngine;
 
-public class Chicken : EnnemyClass //Je crée une classe Bee qui hérite de la classe EnnemyClass
+public class Chicken : EnnemyClass //Je crée une classe Chicken qui hérite de la classe EnnemyClass
 {
     [SerializeField] GameObject prefabOeuf;
-    private void Start()
+    
+    private void Start() // Initialisation des statistiques spécifiques au poulet
     {
+        originalColor = Color.white;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = originalColor;
         range = 4f;
         HP = 3;
         AttackSpeed = 3f;
     }
-
-    
     private void Update()
     {
         Movement();
         Attack();
     }
-    public override void Attack()
+    public override void Attack() //Override de la méthode Attack de la classe EnnemyClass pour la modifier
     {
         if (dst < range && isAttacking == false)
         {
@@ -28,7 +31,6 @@ public class Chicken : EnnemyClass //Je crée une classe Bee qui hérite de la cla
         }
 
     }
-    
     IEnumerator AttackOeufCoroutine()
     {
         if (isAttacking) yield break; // Empêche d'attaquer si déjà en train d'attaquer

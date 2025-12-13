@@ -5,9 +5,13 @@ public class Carrots : EnnemyClass //Je crée une classe Bee qui hérite de la cla
    
     private void Start()
     {
-        HP = 7;
+
+        originalColor = Color.orange;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = originalColor;
+        HP = 10;
         range = 1.25f;
-        AttackDmg = 1;
+        AttackDmg = 3;
         
 
     }

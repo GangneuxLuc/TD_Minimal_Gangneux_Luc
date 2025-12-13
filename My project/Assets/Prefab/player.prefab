@@ -350,9 +350,13 @@ MonoBehaviour:
   speed: 5
   CanMove: 1
   attackSpeed: 0.075
-  HP: 10
+  HP: 20
   AttackDmg: 1
   isAttacking: 0
+  spriteRenderer: {fileID: 6527400765320585089}
+  specialRange: 1
+  specialDuration: 8
+  specialCooldown: 5
 --- !u!70 &4420199000828609646
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

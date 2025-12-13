@@ -3,27 +3,21 @@ using System.Collections;
 
 public class PivotRotation : MonoBehaviour
 {
-    GameObject player;
+    GameObject player; 
     PlayerProp playerProp;
-    Quaternion InitialRotation;
-
-
-
-    void Start()
+    Quaternion InitialRotation; 
+    void Start() // Initialisation de la rotation du pivot 
     {
         player = GameObject.FindWithTag("Player");
         playerProp = player.GetComponent<PlayerProp>();
         InitialRotation = gameObject.transform.rotation;
-
     }
 
     void Update()
     {
-       
        StartCoroutine(Rotation());
-
     }
-    public IEnumerator Rotation()
+    public IEnumerator Rotation() // Coroutine pour gérer la rotation lors de l'attaque
     {
         if (playerProp.isAttacking)
         {

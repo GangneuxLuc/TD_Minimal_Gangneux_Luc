@@ -13,29 +13,29 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
     [SerializeField] protected int AttackDmg;
     [SerializeField] protected float AttackSpeed = 2f;
     [SerializeField] protected bool isAttacking = false;
-
     [Header("Références")]
     public GameObject player;
-
-    SpriteRenderer spriteRenderer;
+    private Spawner spawner;
+    public SpriteRenderer spriteRenderer;
     [SerializeField] protected float range = 0f;
     protected float dst;
     public bool bDebugCanMove = true;
 
-   void Start()
+    protected Color originalColor;
+
+    void Start() // Initialisation des références
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = Color.white;
+        originalColor = spriteRenderer.color;
     }
 
-    private void Update()
+    private void Update() // Logique principale de l'ennemi
     {
         Movement();
         Attack();
 
     }
 
-    public virtual void Attack()
+    public virtual void Attack() // Logique d'attaque de l'ennemi
     {
         if (dst < range && isAttacking == false)
         {
@@ -45,18 +45,18 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         
     }
    
-    protected IEnumerator AttackCoroutine()
+    protected IEnumerator AttackCoroutine() // Logique d'attaque avec délai
     {
         
        if (isAttacking) yield break; // Empêche d'attaquer si déjà en train d'attaquer
-        player.GetComponent<PlayerProp>().HP -= AttackDmg;
+        player.GetComponent<PlayerProp>().HP -= AttackDmg; 
         isAttacking = true;
         yield return new WaitForSeconds(AttackSpeed);
         isAttacking = false;
 
     }
 
-    public virtual void Movement()
+    public virtual void Movement() // Logique de déplacement de l'ennemi vers le joueur
     {
         dst = CalculateDistanceXYPlane();
         if (dst < range)
@@ -75,34 +75,55 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision) // Détection des collisions avec le joueur
     {
         if (collision.gameObject.CompareTag("Player") && player.GetComponent<PlayerProp>().isAttacking)
         {
-            HP -= player.GetComponent<PlayerProp>().AttackDmg;
-            ResetColor();
-
+            HP -= player.GetComponent<PlayerProp>().AttackDmg; // Réduction des HP de l'ennemi
+           
+            StartCoroutine(FeedbackAndMaybeDie()); // lancer le feedback puis tuer si HP <= 0
             Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
-            if (HP <= 0)
-            {
-                Destroy(gameObject);
-                Debug.Log("L'ennemi est mort !");
-            }
+            // Ne pas appeler Die() immédiatement ici : on attend la fin du feedback visuel
+        }
+    }
+    IEnumerator Feedback()
+    {
+        Debug.Log("Feedback visuel de l'ennemi touché");
+        if (spriteRenderer != null) spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        if (spriteRenderer != null) spriteRenderer.color = originalColor;
+
+    }
+
+    // Nouveau : lance le feedback puis détruit l'ennemi si ses PV sont à zéro
+    IEnumerator FeedbackAndMaybeDie()
+    {
+        yield return StartCoroutine(Feedback());
+
+        if (HP <= 0)
+        {
+            Die();
+            Debug.Log("L'ennemi est mort !");
         }
     }
 
-    IEnumerator ResetColor()
-    {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        spriteRenderer.color = Color.white;
-    }
-
-
-    protected float CalculateDistanceXYPlane()
+    protected float CalculateDistanceXYPlane() // Calcul de la distance entre l'ennemi et le joueur 
     {
         Vector2 V1 = new Vector2(player.transform.position.x, player.transform.position.y);
         Vector2 V2 = new Vector2(transform.position.x, transform.position.y);
         return Vector2.Distance(V1, V2);
     }
+    public void SetSpawner(Spawner s) => spawner = s; // Appeler depuis le Spawner après instantiation : ec.SetSpawner(this);
+    void Die() // Logique de mort de l'ennemi
+    {
+        // ... logique de mort (sons, animations, désactivation)
+        spawner?.UnregisterEnemy(gameObject);
+        Destroy(gameObject);
+    }
+
+    // --- Accesseurs publics ajoutés pour que le Player puisse lire les stats de l'ennemi ---
+    public int GetAttackDmg() => AttackDmg;
+    public float GetAttackSpeed() => AttackSpeed;
+    public float GetSpeed() => speed;
+    public Sprite GetSprite() => spriteRenderer.sprite;
 }

@@ -7,28 +7,33 @@ public class PlayerProp : MonoBehaviour
 {
     [Header("Propriétés du joueur")]
     [SerializeField] private float speed = 1.0f;
-   // [SerializeField] private GameObject joueur;
     [SerializeField] private bool CanMove = true;
-   // [SerializeField] private float range = 1f;
-    [SerializeField] public float attackSpeed = 1f;
-    [SerializeField] public int HP = 10;
+    [SerializeField] public float attackSpeed = 0.075f;
+    [SerializeField] public int HP = 20;
     [SerializeField] public int AttackDmg = 1;
     [SerializeField] public bool isAttacking = false;
+    [SerializeField] public bool isSpecialAttacking = false;
 
     private Vector2 movement;
+    GameObject ennemy;
+    public SpriteRenderer spriteRenderer;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
+    {
+        ennemy = GameObject.FindWithTag("Ennemy");
+    }
+    void Update() // Logique principale du joueur
     {
         Movement();
         Attack();
+        SpecialAttack();
         if (HP <= 0)
         {
             Debug.Log("Le joueur est mort !");
             Destroy(gameObject);
         }
 
-    }
+    } 
 
     void Attack()
     {
@@ -40,14 +45,14 @@ public class PlayerProp : MonoBehaviour
       
     }
 
-    IEnumerator AttackCoroutine()
+    IEnumerator AttackCoroutine() // Logique d'attaque avec délai
     {
         isAttacking = true;
         yield return new WaitForSeconds(attackSpeed);
         isAttacking = false;
         yield return new WaitForSeconds(attackSpeed * 1.5f);
     }
-    public virtual void Movement()
+    public virtual void Movement() // Logique de déplacement du joueur
     {
         if (CanMove)
         {
@@ -56,6 +61,15 @@ public class PlayerProp : MonoBehaviour
         }
     }
 
+    void SpecialAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isSpecialAttacking = true;
+
+            Debug.Log("Attaque spéciale du joueur !");
+        }
+    }
 }
 
 

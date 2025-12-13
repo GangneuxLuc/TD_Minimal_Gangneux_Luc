@@ -112,6 +112,7 @@ MonoBehaviour:
   AttackSpeed: 0
   isAttacking: 0
   player: {fileID: 1156284652567387631, guid: db37d45c5a2865c4fb720f74b1dbcbec, type: 3}
+  spriteRenderer: {fileID: 6176571793168456928}
   range: 5
   bDebugCanMove: 1
   prefabOeuf: {fileID: 617004596214064179, guid: 381fbb1102da98244bf417f17aad490d, type: 3}

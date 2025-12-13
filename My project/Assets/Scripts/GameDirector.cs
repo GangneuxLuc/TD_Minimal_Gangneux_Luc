@@ -10,16 +10,8 @@ public class GameDirector : MonoBehaviour
     [SerializeField] bool isPaused;
     [SerializeField] Button resume;
     [SerializeField] Button quit;
-    
-    
-
     int Hp;
-
-    private void Start()
-    {
-        
-    }
-    void Update()
+    void Update() //Gère la pause du jeu et la détection de la mort du joueur
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -31,7 +23,7 @@ public class GameDirector : MonoBehaviour
         OnPlayerDeath();
     }
 
-    void OnPlayerDeath()
+    void OnPlayerDeath() //Vérifie si le joueur est mort et gère la fin du jeu
     {
        Hp = GameObject.FindWithTag("Player").GetComponent<PlayerProp>().HP;
         if (Hp <= 0)
@@ -42,7 +34,7 @@ public class GameDirector : MonoBehaviour
         }
 
     }
-    void Pause()
+    void Pause() //Met le jeu en pause et affiche le menu de pause
     {
        
         Time.timeScale = 0f;
@@ -55,7 +47,7 @@ public class GameDirector : MonoBehaviour
         quit.onClick.AddListener(QuitButton);
     }
 
-    protected void Resume()
+    protected void Resume() //Reprend le jeu à partir de la pause
     {
        
         Time.timeScale = 1f;
@@ -64,13 +56,13 @@ public class GameDirector : MonoBehaviour
         Destroy(GameObject.Find(pauseMenu.name + "(Clone)"));
     }
 
-    void ResumeButton()
+    void ResumeButton() //Gère le clic sur le bouton de reprise
     {
         Debug.Log("Resume Button Clicked");
         Resume();
     }
 
-    void QuitButton()
+    void QuitButton() //Gère le clic sur le bouton de quitter
     {
             Application.Quit();
     }

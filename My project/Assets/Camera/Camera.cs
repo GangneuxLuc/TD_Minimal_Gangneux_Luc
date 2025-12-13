@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class Camera : MonoBehaviour // Script de caméra suivant le joueur
 {
     public Transform player;
     public Vector3 offset = new Vector3(0f, 3f, -6f);
@@ -15,7 +15,7 @@ public class Camera : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").transform;
     }
-    void LateUpdate()
+    void LateUpdate() // Utilisation de LateUpdate pour s'assurer que la caméra suit le joueur après que celui-ci ait bougé
     {
         transform.position = Vector3.Lerp(transform.position, player.position + offset,smoothLerp);
         Quaternion rotation = Quaternion.Euler(RotationY, RotationX, 0f);
