@@ -12,6 +12,7 @@ public class Chicken : EnnemyClass //Je crée une classe Chicken qui hérite de la
         originalColor = Color.white;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = originalColor;
+ 
         range = 4f;
         HP = 3;
         AttackSpeed = 3f;

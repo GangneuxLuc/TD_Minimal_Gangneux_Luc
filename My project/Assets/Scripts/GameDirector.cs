@@ -11,7 +11,14 @@ public class GameDirector : MonoBehaviour
     [SerializeField] Button resume;
     [SerializeField] Button quit;
     int Hp;
-    void Update() //Gère la pause du jeu et la détection de la mort du joueur
+
+    void Start()
+    {
+        // S'assurer que le timeScale est normal au démarrage d'une scène de jeu
+        Time.timeScale = 1f;
+    }
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {

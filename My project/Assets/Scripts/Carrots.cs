@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Carrots : EnnemyClass //Je crée une classe Bee qui hérite de la classe EnnemyClass
+public class Carrots : EnnemyClass //Je crée une classe Carrots qui hérite de la classe EnnemyClass
 {
    
     private void Start()
@@ -10,7 +10,7 @@ public class Carrots : EnnemyClass //Je crée une classe Bee qui hérite de la cla
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.color = originalColor;
         HP = 10;
-        range = 1.25f;
+        range = 1.5f;
         AttackDmg = 3;
         
 

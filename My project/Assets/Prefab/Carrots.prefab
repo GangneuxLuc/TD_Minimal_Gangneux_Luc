@@ -107,7 +107,7 @@ MonoBehaviour:
   HP: 7
   Name: Carrots
   speed: 1
-  AttackDmg: 1
+  AttackDmg: 3
   AttackSpeed: 1
   isAttacking: 0
   player: {fileID: 0}

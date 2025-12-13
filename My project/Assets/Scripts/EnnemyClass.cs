@@ -20,19 +20,14 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
     [SerializeField] protected float range = 0f;
     protected float dst;
     public bool bDebugCanMove = true;
-
     protected Color originalColor;
 
-    void Start() // Initialisation des références
-    {
-        originalColor = spriteRenderer.color;
-    }
+
 
     private void Update() // Logique principale de l'ennemi
     {
         Movement();
         Attack();
-
     }
 
     public virtual void Attack() // Logique d'attaque de l'ennemi
@@ -81,32 +76,26 @@ public class EnnemyClass : MonoBehaviour //Classe de base pour les ennemis
         {
             HP -= player.GetComponent<PlayerProp>().AttackDmg; // Réduction des HP de l'ennemi
            
-            StartCoroutine(FeedbackAndMaybeDie()); // lancer le feedback puis tuer si HP <= 0
+            StartCoroutine(Feedback());
             Debug.Log("L'ennemi a été touché ! HP restant : " + HP);
-            // Ne pas appeler Die() immédiatement ici : on attend la fin du feedback visuel
+            if (HP <= 0) // Mort de l'ennemi
+            {
+                Die();
+                Debug.Log("L'ennemi est mort !");
+            }
         }
     }
-    IEnumerator Feedback()
+    IEnumerator Feedback() // Feedback visuel lorsque l'ennemi est touché
     {
         Debug.Log("Feedback visuel de l'ennemi touché");
-        if (spriteRenderer != null) spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        if (spriteRenderer != null) spriteRenderer.color = originalColor;
-
+        spriteRenderer.color = Color.red;
+        Debug.Log("Changement de couleur de l'ennemi en rouge");
+        yield return new WaitForSeconds(0.05f);
+        spriteRenderer.color = originalColor;
+        Debug.Log("Restauration de la couleur originale de l'ennemi");
+     
+  
     }
-
-    // Nouveau : lance le feedback puis détruit l'ennemi si ses PV sont à zéro
-    IEnumerator FeedbackAndMaybeDie()
-    {
-        yield return StartCoroutine(Feedback());
-
-        if (HP <= 0)
-        {
-            Die();
-            Debug.Log("L'ennemi est mort !");
-        }
-    }
-
     protected float CalculateDistanceXYPlane() // Calcul de la distance entre l'ennemi et le joueur 
     {
         Vector2 V1 = new Vector2(player.transform.position.x, player.transform.position.y);
