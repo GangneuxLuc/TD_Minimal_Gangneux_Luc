@@ -1041,8 +1041,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Appuyez sur V pour commencer les vagues\n\nUtilisez la comp\xE9tence sp\xE9ciale
-    avec la barre d'espace.\n\nD\xE9placez vous avec ZQSD et les fl\xE8ches directionnelles"
+  m_text: "Appuyez sur V pour commencer les vagues\n\nFrapper avec le clic gauche
+    de la souris\n\nUtilisez la comp\xE9tence sp\xE9ciale avec la barre d'espace.\n\nD\xE9placez
+    vous avec ZQSD et les fl\xE8ches directionnelles"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

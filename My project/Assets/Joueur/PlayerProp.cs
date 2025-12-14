@@ -75,7 +75,7 @@ public class PlayerProp : MonoBehaviour
 
     void Attack()
     {
-        if (Input.GetMouseButton(0) && isAttacking == false)
+        if (Input.GetMouseButtonDown(0) && isAttacking == false)
         {
             StartCoroutine(AttackCoroutine());
         }
