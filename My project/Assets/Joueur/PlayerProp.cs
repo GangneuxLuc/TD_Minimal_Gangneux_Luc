@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerProp : MonoBehaviour
 {
@@ -14,21 +15,49 @@ public class PlayerProp : MonoBehaviour
     [SerializeField] public bool isAttacking = false;
     [SerializeField] public bool isSpecialAttacking = false;
 
+    // Référence à la spatule (à assigner dans l'inspecteur si nécessaire)
+    [SerializeField] private Transform spatulaTransform;
+    private Vector3 originalSpatulaScale;
+
     private Vector2 movement;
     GameObject ennemy;
     public SpriteRenderer spriteRenderer;
     Color originalColor;
 
+    // durée du spécial 
+    [SerializeField] private float specialDuration = 1f;
+    // cooldown du spécial 
+    [SerializeField] private float specialCooldown = 10f;
+    private float lastSpecialTime = -Mathf.Infinity;
+
     // suivi des PV pour détecter une diminution
     private int lastHP;
     private Coroutine flashCoroutine;
+
+    // sauvegarde du sprite original pour restauration après spécial
+    private Sprite originalSprite;
+
+    // sauvegardes de stats pour restauration
+    private float originalSpeed;
+    private float originalAttackSpeed;
+    private int originalAttackDmg;
 
     void Start()
     {
         ennemy = GameObject.FindWithTag("Ennemy");
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        originalColor = spriteRenderer != null ? spriteRenderer.color : Color.white;
+        originalColor = spriteRenderer.color;
+        originalSprite = spriteRenderer.sprite;
         lastHP = HP;
+
+        // sauvegarder stats initiales
+        originalAttackSpeed = attackSpeed;
+        originalAttackDmg = AttackDmg;
+
+        if (spatulaTransform != null)
+            originalSpatulaScale = spatulaTransform.localScale;
+        else
+            originalSpatulaScale = Vector3.one;
     }
     void Update() // Logique principale du joueur
     {
@@ -42,11 +71,11 @@ public class PlayerProp : MonoBehaviour
             Destroy(gameObject);
         }
 
-    } 
+    }  
 
     void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && isAttacking == false)
+        if (Input.GetMouseButton(0) && isAttacking == false)
         {
             StartCoroutine(AttackCoroutine());
         }
@@ -64,18 +93,60 @@ public class PlayerProp : MonoBehaviour
         if (CanMove)
         {
             movement.x = Input.GetAxis("Horizontal");
-            transform.Translate(movement * speed * Time.deltaTime);
+            transform.Translate(movement * speed* Time.deltaTime);
         }
     }
 
     void SpecialAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            isSpecialAttacking = true;
+            if (isSpecialAttacking)
+            {
+                Debug.Log("Spécial déjà actif.");
+                return;
+            }
 
-            Debug.Log("Attaque spéciale du joueur !");
+            // vérifie le cooldown avant de lancer le spécial
+            if (Time.time < lastSpecialTime + specialCooldown)
+            {
+                float remaining = (lastSpecialTime + specialCooldown) - Time.time;
+                Debug.Log($"Spécial en cooldown: {remaining:F1}s restants");
+                return;
+            }
+
+            lastSpecialTime = Time.time; // démarre le cooldown
+            StartCoroutine(SpecialAttackCoroutine());
         }
+    }
+
+    IEnumerator SpecialAttackCoroutine()
+    {
+        if (isSpecialAttacking) yield break; // Empêche d'activer le spécial si déjà en train de l'utiliser
+        isSpecialAttacking = true;
+
+        // sauvegarde déjà faite dans Start, mais on s'assure ici également
+        if (spatulaTransform != null)
+        {
+            if (originalSpatulaScale == Vector3.zero) originalSpatulaScale = spatulaTransform.localScale;
+            spatulaTransform.localScale = originalSpatulaScale * 3f;
+        }
+        
+        // Augmenter les stats du joueur pendant la durée du spécial
+        attackSpeed *= 0.5f;
+        AttackDmg *= 2;
+        yield return new WaitForSeconds(specialDuration);
+        Debug.Log("Fin du spécial du joueur");
+
+        // Restaurer les stats originales
+        attackSpeed = originalAttackSpeed;
+        AttackDmg = originalAttackDmg;
+        if (spatulaTransform != null) spatulaTransform.localScale = originalSpatulaScale;
+        Debug.Log("Stats du joueur restaurées");
+
+        isSpecialAttacking = false;
+
+        // NOTE: le cooldown est géré par lastSpecialTime + specialCooldown.
     }
     void Hit()
     {

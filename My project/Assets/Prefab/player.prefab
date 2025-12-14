@@ -353,10 +353,11 @@ MonoBehaviour:
   HP: 20
   AttackDmg: 1
   isAttacking: 0
+  isSpecialAttacking: 0
+  spatulaTransform: {fileID: 2489188053157401177}
   spriteRenderer: {fileID: 6527400765320585089}
-  specialRange: 1
-  specialDuration: 8
-  specialCooldown: 5
+  specialDuration: 2
+  specialCooldown: 10
 --- !u!70 &4420199000828609646
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

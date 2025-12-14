@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class Chicken : EnnemyClass //Je crée une classe Chicken qui hérite de la classe EnnemyClass
 {
-    [SerializeField] GameObject prefabOeuf;
-    
+    [SerializeField] private GameObject prefabOeuf;
     private void Start() // Initialisation des statistiques spécifiques au poulet
     {
         originalColor = Color.white;
@@ -40,6 +39,4 @@ public class Chicken : EnnemyClass //Je crée une classe Chicken qui hérite de la
         yield return new WaitForSeconds(AttackSpeed);
         isAttacking = false;
     }
-
-
 }

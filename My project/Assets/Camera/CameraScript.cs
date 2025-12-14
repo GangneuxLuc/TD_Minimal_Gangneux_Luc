@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Camera : MonoBehaviour // Script de caméra suivant le joueur
+public class CameraScript : MonoBehaviour // Script de caméra suivant le joueur
 {
     public Transform player;
     public Vector3 offset = new Vector3(0f, 3f, -6f);
